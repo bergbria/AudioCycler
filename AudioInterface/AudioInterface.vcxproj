@@ -136,7 +136,7 @@
   <ItemGroup>
     <ClInclude Include="AudioDeviceInfo.h" />
     <ClInclude Include="AudioDeviceManager.h" />
-    <ClInclude Include="AudioDeviceManager_native.h" />
+    <ClInclude Include="PolicyConfig.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
@@ -144,7 +144,6 @@
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="AudioDeviceInfo.cpp" />
     <ClCompile Include="AudioDeviceManager.cpp" />
-    <ClCompile Include="AudioDeviceManager_native.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

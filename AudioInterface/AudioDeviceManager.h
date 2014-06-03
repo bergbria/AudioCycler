@@ -1,11 +1,18 @@
 #pragma once
 
+#include "AudioDeviceInfo.h"
+#include <mmdeviceapi.h>
+
 namespace AudioInterface {
 
 	public ref class AudioDeviceManager
 	{
 	public:
-		int foo();
-		static System::Collections::Generic::List<System::String^>^ GetAvailableAudioDevices();
+		static System::Collections::Generic::List<AudioDeviceInfo^>^ GetAvailableAudioDevices();
+
+		static System::Boolean SetDefaultAudioPlaybackDevice(AudioDeviceInfo^ deviceInfo);
+
+	private:
+		static AudioDeviceInfo^ extractDeviceInfo(IMMDevice * deviceInfo);
 	};
 }

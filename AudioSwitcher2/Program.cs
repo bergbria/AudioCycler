@@ -17,6 +17,9 @@ namespace AudioSwitcher2
         static void Main()
         {
             var foo = AudioDeviceManager.GetAvailableAudioDevices();
+            //AudioDeviceManager.SetDefaultAudioPlaybackDevice(foo[2]);
+            //AudioDeviceManager.SetDefaultAudioPlaybackDevice(foo[5]);
+
             var f = foo.Single();
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
