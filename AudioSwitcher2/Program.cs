@@ -36,13 +36,7 @@ namespace AudioSwitcher2
             XmlNodeList stringElements = toastXML.GetElementsByTagName("text");
 
             stringElements[0].AppendChild(toastXML.CreateTextNode("Playing to: " + result.CurrentDeviceInfo.Name));
-            stringElements[1].AppendChild(toastXML.CreateTextNode("Device " + result.RelativeDeviceNumber + "/" + result.NumCycleableDevices));
-
-            /*
-             * toast format:
-             * Playing to: Device name 
-             * Device 1/3
-            */
+            stringElements[1].AppendChild(toastXML.CreateTextNode("Device " + (result.RelativeDeviceNumber + 1) + " of " + result.NumCycleableDevices));
 
             ToastNotification toast = new ToastNotification(toastXML);
             ToastNotificationManager.CreateToastNotifier(AppId).Show(toast);
