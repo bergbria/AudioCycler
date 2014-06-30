@@ -16,16 +16,25 @@ using namespace msclr::interop;
 
 using namespace AudioInterface;
 
+IMMDeviceEnumerator* AudioDeviceManager::createDeviceEnumerator() {
+	HRESULT result;
+	IMMDeviceEnumerator *pEnum = NULL;
+	// Create a multimedia device enumerator.
+	result = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL,
+	CLSCTX_ALL, __uuidof(IMMDeviceEnumerator), (void**) &pEnum);
+	if (SUCCEEDED(result)) {
+		return pEnum;
+	}
+	return NULL;
+}
+
 List<AudioDeviceInfo^>^ AudioDeviceManager::GetAvailableAudioDevices() {
 	List<AudioDeviceInfo^>^ result = gcnew List<AudioDeviceInfo^>();
 	HRESULT hr = CoInitialize(NULL);
 	if (SUCCEEDED(hr))
 	{
-		IMMDeviceEnumerator *pEnum = NULL;
-		// Create a multimedia device enumerator.
-		hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL,
-			CLSCTX_ALL, __uuidof(IMMDeviceEnumerator), (void**) &pEnum);
-		if (SUCCEEDED(hr))
+		IMMDeviceEnumerator * pEnum = createDeviceEnumerator();
+		if (pEnum != NULL)
 		{
 			IMMDeviceCollection *pDevices;
 			// Enumerate the output devices.
@@ -54,10 +63,27 @@ List<AudioDeviceInfo^>^ AudioDeviceManager::GetAvailableAudioDevices() {
 			}
 
 			//WTF?  If Release() gets called, then redirecting this .exe's output stops working. No idea why.. 
-			// pEnum->Release();
+			 pEnum->Release();
 		}
 	}
 	return result;
+}
+
+AudioDeviceInfo^ AudioDeviceManager::GetCurrentAudioPlaybackDevice() {
+	HRESULT result;
+	IMMDevice * device;
+
+	IMMDeviceEnumerator * deviceEnumerator = createDeviceEnumerator();
+
+	result = deviceEnumerator->GetDefaultAudioEndpoint(eRender, eMultimedia, &device);
+	if (!SUCCEEDED(result)) {
+		return nullptr;
+	}
+
+	AudioDeviceInfo^ managedDevice = extractDeviceInfo(device);
+
+	deviceEnumerator->Release();
+	return managedDevice;
 }
 
 System::Boolean AudioDeviceManager::SetDefaultAudioPlaybackDevice(AudioDeviceInfo^ deviceInfo) {

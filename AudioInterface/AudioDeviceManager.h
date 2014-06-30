@@ -12,7 +12,12 @@ namespace AudioInterface {
 
 		static System::Boolean SetDefaultAudioPlaybackDevice(AudioDeviceInfo^ deviceInfo);
 
+		static AudioDeviceInfo^ GetCurrentAudioPlaybackDevice();
+
 	private:
 		static AudioDeviceInfo^ extractDeviceInfo(IMMDevice * deviceInfo);
+		
+		//caller is responsible for freeing the returned pointer. The object's Release method should be called previous to this. May return null if the operation fails.
+		static IMMDeviceEnumerator* createDeviceEnumerator();
 	};
 }
