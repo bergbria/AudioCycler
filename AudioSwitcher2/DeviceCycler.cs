@@ -10,18 +10,31 @@ namespace AudioSwitcher2
     [Serializable]
     public class DeviceCycler
     {
-        private List<AudioDeviceInfo> allDevices;
         private List<AudioDeviceInfo> cycleableDevices;
 
-        public DeviceCycler()
+        public DeviceCycler(CyclerConfig config)
         {
-            allDevices = AudioDeviceManager.GetAvailableAudioDevices();
-            cycleableDevices = allDevices.Where(device => device.Status == DeviceStatus.Active).OrderBy(device => device.Name).ToList();
+            FindCycleableDevices(config);
+        }
 
-            var excludedDevices = Properties.Settings.Default.excludedDeviceIds;
-            if (excludedDevices != null)
+        private void FindCycleableDevices(CyclerConfig config)
+        {
+            cycleableDevices = new List<AudioDeviceInfo>();
+            List<AudioDeviceInfo> currentDevices = AudioDeviceManager.GetAvailableAudioDevices();
+            if (config == null || config.IsEmpty)
             {
-                cycleableDevices.RemoveAll(device => excludedDevices.Contains(device.DeviceId));
+                cycleableDevices.AddRange(currentDevices.Where(device => device.Status == DeviceStatus.Active));
+            }
+            else
+            {
+                foreach (var storedDevice in config.DevicesToCycle)
+                {
+                    var currentEquivalent = currentDevices.SingleOrDefault(d => d.DeviceId == storedDevice.DeviceId);
+                    if (currentEquivalent != null && currentEquivalent.Status == DeviceStatus.Active)
+                    {
+                        cycleableDevices.Add(currentEquivalent);
+                    }
+                }
             }
         }
 

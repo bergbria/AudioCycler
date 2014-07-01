@@ -21,7 +21,7 @@ namespace AudioSwitcher2
         [STAThread]
         static void Main()
         {
-            DeviceCycler cycler = new DeviceCycler();
+            DeviceCycler cycler = new DeviceCycler(CyclerConfig.Load());
             var cycleResult = cycler.Cycle();
             DisplayToast(cycleResult);
             //Application.EnableVisualStyles();

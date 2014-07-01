@@ -5,6 +5,7 @@
 
 namespace AudioInterface {
 	[System::Flags]
+	[System::Serializable]
 	public enum class DeviceStatus {
 		Active = 1, 
 		Disabled = 2,
@@ -12,6 +13,7 @@ namespace AudioInterface {
 		NotPresent = 8
 	};
 
+	[System::Serializable]
 	public ref class AudioDeviceInfo
 	{
 	public:

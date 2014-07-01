@@ -81,6 +81,7 @@
     <Compile Include="ConfigurationForm.Designer.cs">
       <DependentUpon>ConfigurationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CyclerConfig.cs" />
     <Compile Include="CycleResult.cs" />
     <Compile Include="DeviceCycler.cs" />
     <Compile Include="Program.cs" />
