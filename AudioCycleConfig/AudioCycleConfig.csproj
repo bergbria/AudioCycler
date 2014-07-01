@@ -120,7 +120,7 @@
       <Project>{6d91d029-8ccd-4fa6-9730-8d26179ec381}</Project>
       <Name>AudioInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AudioSwitcher2\AudioSwitcher2.csproj">
+    <ProjectReference Include="..\AudioCycler\AudioCycler.csproj">
       <Project>{9541d72e-9734-4bdb-8351-11e49aef2f0f}</Project>
       <Name>AudioSwitcher2</Name>
     </ProjectReference>

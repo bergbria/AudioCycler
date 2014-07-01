@@ -1,4 +1,4 @@
-﻿namespace AudioSwitcher2
+﻿namespace AudioCycler
 {
     partial class ConfigurationForm
     {

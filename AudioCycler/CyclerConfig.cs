@@ -10,7 +10,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using AudioInterface;
 
-namespace AudioSwitcher2
+namespace AudioCycler
 {
     [Serializable]
     public class CyclerConfig

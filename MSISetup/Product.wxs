@@ -25,7 +25,7 @@
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
 			<Component Id="CyclerExecutable" Guid="BCF80FDF-3145-4FAB-B10D-4E1A0206B640">
-				<File Id="CyclerExecutable" Source="$(var.AudioSwitcher2.TargetPath)" />
+				<File Id="CyclerExecutable" Source="$(var.AudioCycler.TargetPath)" />
 			</Component>
 			<Component Id="AudioInterface.dll" Guid="DE889805-B93C-43FD-BC03-E36834DD5A5D">
 				<File Source="$(var.AudioInterface.TargetPath)"/>
@@ -40,7 +40,7 @@
 						  Description="Cycle audio playback device to the next available device"
 						  Target="[#CyclerExecutable]"
 						  WorkingDirectory="APPLICATIONROOTDIRECTORY">
-					<ShortcutProperty Key="System.AppUserModel.ID" Value="Berger.AudioSwitcher2" />
+					<ShortcutProperty Key="System.AppUserModel.ID" Value="Berger.AudioCycler" />
 				</Shortcut>
 
 				<Shortcut Id="UninstallProduct"

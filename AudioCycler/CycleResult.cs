@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AudioInterface;
 
-namespace AudioSwitcher2
+namespace AudioCycler
 {
     public class CycleResult
     {

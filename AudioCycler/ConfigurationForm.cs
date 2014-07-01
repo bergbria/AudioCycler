@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AudioSwitcher2
+namespace AudioCycler
 {
     public partial class ConfigurationForm : Form
     {

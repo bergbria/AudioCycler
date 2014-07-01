@@ -8,12 +8,12 @@ using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
 
-namespace AudioSwitcher2
+namespace AudioCycler
 {
 
     static class Program
     {
-        const string AppId = "Berger.AudioSwitcher2";
+        const string AppId = "Berger.AudioCycler";
 
         /// <summary>
         /// The main entry point for the application.

@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AudioInterface;
-using AudioSwitcher2;
+using AudioCycler;
 
 namespace AudioCycleConfig
 {
