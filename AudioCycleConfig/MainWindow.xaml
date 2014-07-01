@@ -12,26 +12,24 @@
             </StackPanel.Resources>
         </StackPanel>-->
         <StackPanel Orientation="Horizontal">
-            <Border BorderThickness="2" BorderBrush="Aqua">
-                <ListBox Name="UncycledDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Border>
+            <ListBox Name="UncycledDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
             <Button Content="&gt;&gt;" Height="auto" Name="ActivateDevicesButton" Click="ActivateDevicesButton_OnClick"/>
             <Button Content="&lt;&lt;" Height="auto" Name ="DeactivateDevicesButton" Click="DeactivateDevicesButton_OnClick"/>
-            <Border BorderThickness="2" BorderBrush="Aqua">
-                <ListBox Name="CyclingDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Border>
+            <ListBox Name="CyclingDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
             <Button Content="Save" Name="SaveButton" Click="SaveButton_OnClick"></Button>
         </StackPanel>
     </Grid>
