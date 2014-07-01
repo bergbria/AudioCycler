@@ -17,6 +17,8 @@ namespace AudioInterface {
 	public ref class AudioDeviceInfo
 	{
 	public:
+		AudioDeviceInfo();
+
 		AudioDeviceInfo(const std::wstring & deviceName, const std::wstring & deviceID, const DWORD& deviceState);
 
 		property System::String ^Name;

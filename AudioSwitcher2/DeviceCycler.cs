@@ -10,7 +10,7 @@ namespace AudioSwitcher2
     [Serializable]
     public class DeviceCycler
     {
-        private List<AudioDeviceInfo> cycleableDevices;
+        private CyclerConfig Config;
 
         public DeviceCycler(CyclerConfig config)
         {
@@ -19,36 +19,25 @@ namespace AudioSwitcher2
 
         private void FindCycleableDevices(CyclerConfig config)
         {
-            cycleableDevices = new List<AudioDeviceInfo>();
-            List<AudioDeviceInfo> currentDevices = AudioDeviceManager.GetAvailableAudioDevices();
-            if (config == null || config.IsEmpty)
+            if (config == null)
             {
-                cycleableDevices.AddRange(currentDevices.Where(device => device.Status == DeviceStatus.Active));
+                throw new ArgumentNullException();
             }
-            else
-            {
-                foreach (var storedDevice in config.DevicesToCycle)
-                {
-                    var currentEquivalent = currentDevices.SingleOrDefault(d => d.DeviceId == storedDevice.DeviceId);
-                    if (currentEquivalent != null && currentEquivalent.Status == DeviceStatus.Active)
-                    {
-                        cycleableDevices.Add(currentEquivalent);
-                    }
-                }
-            }
+            this.Config = config;
         }
 
         public CycleResult Cycle()
         {
-            if (cycleableDevices.Any())
+            if (!Config.IsEmpty)
             {
+                var cyclingDevices = Config.ActiveCyclingDevices;
                 AudioDeviceInfo currentDevice = AudioDeviceManager.GetCurrentAudioPlaybackDevice();
-                int currentIndex = cycleableDevices.FindIndex(dev => dev.DeviceId.Equals(currentDevice.DeviceId));
-                int newIndex = (currentIndex + 1) % cycleableDevices.Count;
+                int currentIndex = cyclingDevices.FindIndex(dev => dev.DeviceId.Equals(currentDevice.DeviceId));
+                int newIndex = (currentIndex + 1) % cyclingDevices.Count;
                 var resultType = CycleResult.CycleResultType.Success;
                 if (currentIndex != newIndex)
                 {
-                    AudioDeviceInfo newDevice = cycleableDevices[newIndex];
+                    AudioDeviceInfo newDevice = cyclingDevices[newIndex];
                     bool operationSucceeded = AudioDeviceManager.SetDefaultAudioPlaybackDevice(newDevice);
                     resultType = operationSucceeded ? CycleResult.CycleResultType.Success : CycleResult.CycleResultType.Failure;
                     if (operationSucceeded)
@@ -56,7 +45,7 @@ namespace AudioSwitcher2
                         currentDevice = newDevice;
                     }
                 }
-                return new CycleResult(currentDevice, resultType, cycleableDevices.Count, newIndex);
+                return new CycleResult(currentDevice, resultType, cyclingDevices.Count, newIndex);
             }
             return new CycleResult(null, CycleResult.CycleResultType.Failure, -1, -1);
         }

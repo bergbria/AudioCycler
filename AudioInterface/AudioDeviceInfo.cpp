@@ -6,6 +6,10 @@ using namespace std;
 using namespace System;
 using namespace AudioInterface;
 
+AudioDeviceInfo::AudioDeviceInfo() {
+
+}
+
 AudioDeviceInfo::AudioDeviceInfo(const wstring & deviceName, const wstring & deviceID, const DWORD& deviceState)
 {
 	this->Name = gcnew String(deviceName.c_str());
