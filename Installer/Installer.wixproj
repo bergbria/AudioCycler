@@ -6,7 +6,7 @@
     <ProductVersion>3.8</ProductVersion>
     <ProjectGuid>4d19e201-0894-4cf3-9d6c-9629c505a96d</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>Installer</OutputName>
+    <OutputName>AudioCycler Installer</OutputName>
     <OutputType>Bundle</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>

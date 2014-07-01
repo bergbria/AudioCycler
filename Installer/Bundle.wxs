@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Bundle Name="Installer" Version="1.0.0.0" Manufacturer="BergerTech" UpgradeCode="4d19e201-0894-4cf3-9d6c-9629c505a96d">
+	<Bundle Name="AudioCycler" Version="1.0.0.0" Manufacturer="BergerTech" UpgradeCode="4d19e201-0894-4cf3-9d6c-9629c505a96d">
 		<BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense" />
 
 		<Chain>

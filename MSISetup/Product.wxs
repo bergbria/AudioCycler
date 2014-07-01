@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Product Id="*" Name="AudioCycler" Language="1033" Version="1.0.0.0" Manufacturer="BergerTech" UpgradeCode="4f5617b3-49be-4b1d-8385-67264ffe3769">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+		
+		<?if $(var.Platform) = x64 ?>
+		<?define ProductName = "AudioCycler (64 bit)" ?>
+		<?define Win64 = "yes" ?>
+		<?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+		<?else ?>
+		<?define ProductName = "AudioCycler" ?>
+		<?define Win64 = "no" ?>
+		<?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+		<?endif ?>
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="$(var.Platform)" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate />
 
-		<Feature Id="ProductFeature" Title="MSISetup" Level="1">
+		<Feature Id="ProductFeature" Title="AudioCycler" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
 		</Feature>
 	</Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
+			<Directory Id="$(var.PlatformProgramFilesFolder)">
 				<Directory Id="INSTALLFOLDER" Name="Audio Cycler" />
 			</Directory>
 			<Directory Id="ProgramMenuFolder">
