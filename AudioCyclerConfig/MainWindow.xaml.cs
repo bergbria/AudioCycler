@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 using AudioInterface;
 using AudioCycler;
 
-namespace AudioCycleConfig
+namespace AudioCyclerConfig
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

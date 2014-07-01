@@ -24,6 +24,14 @@
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AudioCyclerConfig\AudioCyclerConfig.csproj">
+      <Name>AudioCyclerConfig</Name>
+      <Project>{fc92e133-f922-4d94-af05-30f6de2b2727}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\AudioCycler\AudioCycler.csproj">
       <Name>AudioCycler</Name>
       <Project>{9541d72e-9734-4bdb-8351-11e49aef2f0f}</Project>

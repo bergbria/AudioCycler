@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="MSISetup" Language="1033" Version="1.0.0.0" Manufacturer="BergerTech" UpgradeCode="4f5617b3-49be-4b1d-8385-67264ffe3769">
+	<Product Id="*" Name="AudioCycler" Language="1033" Version="1.0.0.0" Manufacturer="BergerTech" UpgradeCode="4f5617b3-49be-4b1d-8385-67264ffe3769">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -14,22 +14,24 @@
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="Audio Switcher" />
+				<Directory Id="INSTALLFOLDER" Name="Audio Cycler" />
 			</Directory>
 			<Directory Id="ProgramMenuFolder">
-				<Directory Id="ApplicationShortcutsFolder" Name="Audio Switcher" />
+				<Directory Id="ApplicationShortcutsFolder" Name="Audio Cycler" />
 			</Directory>
 		</Directory>
 	</Fragment>
 
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<Component Id="CyclerExecutable" Guid="BCF80FDF-3145-4FAB-B10D-4E1A0206B640">
-				<File Id="CyclerExecutable" Source="$(var.AudioCycler.TargetPath)" />
+			<Component Id="AudioCycler.exe" Guid="BCF80FDF-3145-4FAB-B10D-4E1A0206B640">
+				<File Id="AudioCycler.exe" Source="$(var.AudioCycler.TargetPath)" />
+			</Component>
+			<Component Id="AudioCyclerConfig.exe" Guid="A31FDF0F-DAC1-4511-8B9E-7DF1C9CC509E">
+				<File Source="$(var.AudioCyclerConfig.TargetPath)" />
 			</Component>
 			<Component Id="AudioInterface.dll" Guid="DE889805-B93C-43FD-BC03-E36834DD5A5D">
 				<File Source="$(var.AudioInterface.TargetPath)"/>
-				<!--<RemoveFile Id="RemoveAudioInterface.dll" Name="$(var.AudioInterface.TargetFileName)" On="uninstall"/>-->
 			</Component>
 		</ComponentGroup>
 
@@ -38,19 +40,20 @@
 				<Shortcut Id="CyclerShortcut"
 						  Name="Cycle Audio Device"
 						  Description="Cycle audio playback device to the next available device"
-						  Target="[#CyclerExecutable]"
+						  Target="[#AudioCycler.exe]"
 						  WorkingDirectory="APPLICATIONROOTDIRECTORY">
 					<ShortcutProperty Key="System.AppUserModel.ID" Value="Berger.AudioCycler" />
 				</Shortcut>
 
-				<Shortcut Id="UninstallProduct"
-          Name="Uninstall AudioSwitcher"
-          Target="[SystemFolder]msiexec.exe"
-          Arguments="/x [ProductCode]"
-          Description="Uninstalls AudioSwitcher" />
+				<Shortcut Id="CyclerConfigShortcut"
+						  Name="Configure AudioCycler"
+						  Description="Configure which devices are cycled in which order"
+						  Target="[#AudioCyclerConfig.exe]"
+						  WorkingDirectory="APPLICATIONROOTDIRECTORY">
+				</Shortcut>
 
 				<RemoveFolder Id="ApplicationShortcutsFolder" On="uninstall"/>
-				<RegistryValue Root="HKCU" Key="Software\Microsoft\AudioSwitcher" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+				<RegistryValue Root="HKCU" Key="Software\Microsoft\AudioCycler" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
 			</Component>
 		</ComponentGroup>
 

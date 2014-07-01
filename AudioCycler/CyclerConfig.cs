@@ -94,7 +94,6 @@ namespace AudioCycler
         private static CyclerConfig retrieveSavedConfig()
         {
             CyclerConfig config = new CyclerConfig();
-            bool readSuccess = true;
             try
             {
                 using (var readStream = new FileStream(SaveFilePath, FileMode.Open, FileAccess.Read))

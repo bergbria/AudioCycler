@@ -7,8 +7,8 @@
     <ProjectGuid>{9541D72E-9734-4BDB-8351-11E49AEF2F0F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AudioSwitcher2</RootNamespace>
-    <AssemblyName>AudioSwitcher2</AssemblyName>
+    <RootNamespace>AudioCycler</RootNamespace>
+    <AssemblyName>AudioCycler</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
