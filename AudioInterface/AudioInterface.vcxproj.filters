@@ -24,10 +24,10 @@
     <ClInclude Include="AudioDeviceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AudioDeviceManager_native.h">
+    <ClInclude Include="AudioDeviceInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AudioDeviceInfo.h">
+    <ClInclude Include="PolicyConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,15 +41,9 @@
     <ClCompile Include="AudioDeviceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AudioDeviceManager_native.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AudioDeviceInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc">

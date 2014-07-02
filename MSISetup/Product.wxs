@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="AudioCycler" Language="1033" Version="1.0.0.0" Manufacturer="BergerTech" UpgradeCode="4f5617b3-49be-4b1d-8385-67264ffe3769">
+		
+		<?if $(var.Platform) = x64 ?>
+		<?define ProductName = "AudioCycler (64 bit)" ?>
+		<?define Win64 = "yes" ?>
+		<?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+		<?else ?>
+		<?define ProductName = "AudioCycler" ?>
+		<?define Win64 = "no" ?>
+		<?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+		<?endif ?>
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="$(var.Platform)" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="AudioCycler" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="$(var.PlatformProgramFilesFolder)">
+				<Directory Id="INSTALLFOLDER" Name="Audio Cycler" />
+			</Directory>
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="ApplicationShortcutsFolder" Name="Audio Cycler" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<Component Id="AudioCycler.exe" Guid="BCF80FDF-3145-4FAB-B10D-4E1A0206B640">
+				<File Id="AudioCycler.exe" Source="$(var.AudioCycler.TargetPath)" />
+			</Component>
+			<Component Id="AudioCyclerConfig.exe" Guid="A31FDF0F-DAC1-4511-8B9E-7DF1C9CC509E">
+				<File Source="$(var.AudioCyclerConfig.TargetPath)" />
+			</Component>
+			<Component Id="AudioInterface.dll" Guid="DE889805-B93C-43FD-BC03-E36834DD5A5D">
+				<File Source="$(var.AudioInterface.TargetPath)"/>
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="ApplicationShortcuts" Directory="ApplicationShortcutsFolder" >
+			<Component Id="CyclerShortcut" Guid="F4EC2F81-DEE0-4657-804C-3E669706F14B">
+				<Shortcut Id="CyclerShortcut"
+						  Name="Cycle Audio Device"
+						  Description="Cycle audio playback device to the next available device"
+						  Target="[#AudioCycler.exe]"
+						  WorkingDirectory="APPLICATIONROOTDIRECTORY">
+					<ShortcutProperty Key="System.AppUserModel.ID" Value="Berger.AudioCycler" />
+				</Shortcut>
+
+				<Shortcut Id="CyclerConfigShortcut"
+						  Name="Configure AudioCycler"
+						  Description="Configure which devices are cycled in which order"
+						  Target="[#AudioCyclerConfig.exe]"
+						  WorkingDirectory="APPLICATIONROOTDIRECTORY">
+				</Shortcut>
+
+				<RemoveFolder Id="ApplicationShortcutsFolder" On="uninstall"/>
+				<RegistryValue Root="HKCU" Key="Software\Microsoft\AudioCycler" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+			</Component>
+		</ComponentGroup>
+
+		<Feature Id="MainApplication" Title="Main Application" Level="1" >
+			<ComponentGroupRef Id="ProductComponents"/>
+			<ComponentGroupRef Id="ApplicationShortcuts" />
+		</Feature>
+	</Fragment>
+</Wix>
