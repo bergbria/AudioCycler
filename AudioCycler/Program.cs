@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -32,11 +33,19 @@ namespace AudioCycler
         {
             // Get a toast XML template
             //XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText04);
-            XmlDocument toastXML = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText03);
+            XmlDocument toastXML = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText03);
             XmlNodeList stringElements = toastXML.GetElementsByTagName("text");
 
             stringElements[0].AppendChild(toastXML.CreateTextNode("Playing to: " + result.CurrentDeviceInfo.Name));
             stringElements[1].AppendChild(toastXML.CreateTextNode("Device " + (result.RelativeDeviceNumber + 1) + " of " + result.NumCycleableDevices));
+
+            XmlNodeList images = toastXML.GetElementsByTagName("image");
+            //images[0].Attributes.SetNamedItem()
+            //images[0].setAttribute("src", "images/toastImageAndText.png");
+
+            String imagePath = "file:///" + @"E:\Users\Brian\Code\Personal\AudioCycler\img\icon.png";
+            XmlNodeList imageElements = toastXML.GetElementsByTagName("image");
+            imageElements[0].Attributes.GetNamedItem("src").NodeValue = imagePath;
 
             ToastNotification toast = new ToastNotification(toastXML);
             ToastNotificationManager.CreateToastNotifier(AppId).Show(toast);
