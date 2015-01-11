@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:audioInterface="clr-namespace:AudioInterface;assembly=AudioInterface"
-        Title="Configure AudioCycler" SizeToContent="WidthAndHeight">
+        Title="Configure AudioCycler" SizeToContent="WidthAndHeight" ResizeMode="CanMinimize">
 
     <Window.Resources>
         <Style x:Key="AudioDeviceName" TargetType="TextBlock">
@@ -21,6 +21,22 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=IsVisible}" Value="False">
                     <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ButtonAffectingSelectedCyclingDevicesStyle" TargetType="Button">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=CyclingDeviceListBox, Path=SelectedItems.Count}" Value="0">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ButtonAffectingSelectedNonCyclingDevicesStyle" TargetType="Button">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=NonCyclingDeviceListBox, Path=SelectedItems.Count}" Value="0">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -51,8 +67,8 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button Grid.Row="1" Grid.Column="1" Content="&gt;&gt;" Height="auto" Name="ActivateDevicesButton" Click="ActivateDevicesButton_OnClick"/>
-        <Button Grid.Row="1" Grid.Column="2" Content="&lt;&lt;" Height="auto" Name ="DeactivateDevicesButton" Click="DeactivateDevicesButton_OnClick"/>
+        <Button Grid.Row="1" Grid.Column="1" Content="&gt;&gt;" Height="auto" Name="ActivateDevicesButton" Click="ActivateDevicesButton_OnClick" Style="{StaticResource ButtonAffectingSelectedNonCyclingDevicesStyle}"/>
+        <Button Grid.Row="1" Grid.Column="2" Content="&lt;&lt;" Height="auto" Name ="DeactivateDevicesButton" Click="DeactivateDevicesButton_OnClick" Style="{StaticResource ButtonAffectingSelectedCyclingDevicesStyle}"/>
 
         <ListBox Grid.Row="1" Grid.Column="3" Name="CyclingDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">
             <ListBox.ItemTemplate>
@@ -63,17 +79,17 @@
         </ListBox>
 
         <StackPanel Orientation="Vertical" Grid.Column="4" Grid.Row="1" VerticalAlignment="Center">
-            <Button Margin="3" Content="Move up" Name="MoveUpButton"  Click="MoveUpButton_OnClick"/>
-            <Button Margin="3" Content="Move down" Name="MoveDownButton" Click="MoveDownButton_OnClick"/>
+            <Button Margin="3" Content="Move up" Name="MoveUpButton"  Click="MoveUpButton_OnClick" Style="{StaticResource ButtonAffectingSelectedCyclingDevicesStyle}"/>
+            <Button Margin="3" Content="Move down" Name="MoveDownButton" Click="MoveDownButton_OnClick" Style="{StaticResource ButtonAffectingSelectedCyclingDevicesStyle}"/>
         </StackPanel>
 
         <CheckBox Grid.Row="2" Grid.Column="0" Name="ShowOnlyActiveDevicesCheckBox" Checked="ShowOnlyActiveDevicesCheckBox_OnChecked" Unchecked="ShowOnlyActiveDevicesCheckBox_OnUnchecked" Margin="10">
-            <TextBlock Text="Show only active devices"></TextBlock>
+            <TextBlock Text="Show only active devices" />
         </CheckBox>
 
         <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Save" Name="SaveButton" Click="SaveButton_OnClick" Height="40" Width="80" Margin="10"></Button>
-            <Button Content="Cancel" Name="CancelButton" Click="CancelButton_OnClick" Height="40" Width="80" Margin="10"></Button>
+            <Button Content="Save" Name="SaveButton" Click="SaveButton_OnClick" Height="40" Width="80" Margin="10" />
+            <Button Content="Cancel" Name="CancelButton" Click="CancelButton_OnClick" Height="40" Width="80" Margin="10" />
         </StackPanel>
 
     </Grid>

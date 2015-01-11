@@ -122,6 +122,8 @@ namespace AudioCyclerConfig
             {
                 device.IsVisible = false;
             }
+
+            CyclingDeviceListBox.SelectedItems.Clear();
         }
 
         private void ShowOnlyActiveDevicesCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
@@ -151,19 +153,6 @@ namespace AudioCyclerConfig
             }
         }
 
-        private IEnumerable<int> GetSortedSelectedCyclingDeviceIdices(bool sortDescending)
-        {
-            IEnumerable<int> selectedIndices = CyclingDeviceListBox.SelectedItems.Cast<AudioDeviceInfoViewModel>().Select(
-                device => _displayedCyclingDevices.IndexOf(device));
-
-            if (sortDescending)
-            {
-                return selectedIndices.OrderByDescending(index => index);
-            }
-            
-            return selectedIndices.OrderBy(index => index);
-        }
-
         private void MoveDownButton_OnClick(object sender, RoutedEventArgs e)
         {
             IEnumerable<int> selectedIndices = GetSortedSelectedCyclingDeviceIdices(true);
@@ -177,8 +166,20 @@ namespace AudioCyclerConfig
                     _displayedCyclingDevices[followingIndex] = device;
                     CyclingDeviceListBox.SelectedItems.Add(device);
                 }
-
             }
+        }
+
+        private IEnumerable<int> GetSortedSelectedCyclingDeviceIdices(bool sortDescending)
+        {
+            IEnumerable<int> selectedIndices = CyclingDeviceListBox.SelectedItems.Cast<AudioDeviceInfoViewModel>().Select(
+                device => _displayedCyclingDevices.IndexOf(device));
+
+            if (sortDescending)
+            {
+                return selectedIndices.OrderByDescending(index => index);
+            }
+
+            return selectedIndices.OrderBy(index => index);
         }
     }
 }
