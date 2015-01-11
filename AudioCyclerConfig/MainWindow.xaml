@@ -1,7 +1,6 @@
 ﻿<Window x:Class="AudioCyclerConfig.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:AudioCyclerConfig"
         xmlns:audioInterface="clr-namespace:AudioInterface;assembly=AudioInterface"
         Title="Configure AudioCycler" SizeToContent="WidthAndHeight">
 
@@ -9,8 +8,19 @@
         <Style x:Key="AudioDeviceName" TargetType="TextBlock">
             <Setter Property="Foreground" Value="Gray"></Setter>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=Status}" Value="{x:Static audioInterface:DeviceStatus.Active}">
-                    <Setter Property="Foreground" Value="Black"></Setter>
+                <DataTrigger Binding="{Binding Path=DeviceInfo.Status}" Value="{x:Static audioInterface:DeviceStatus.Active}">
+                    <Setter Property="Foreground" Value="Black" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsDefaultDevice}" Value="True">
+                    <Setter Property="FontWeight" Value="Bold"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style TargetType="{x:Type ListBoxItem}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsVisible}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -19,10 +29,10 @@
     <Grid Margin="10">
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <ListBox Name="UncycledDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">
+                <ListBox Name="NonCyclingDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}" Style="{StaticResource AudioDeviceName}" />
+                            <TextBlock Text="{Binding DeviceInfo.Name}" Style="{StaticResource AudioDeviceName}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -32,11 +42,16 @@
                 <ListBox Name="CyclingDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}" Style="{StaticResource AudioDeviceName}" />
+                            <TextBlock Text="{Binding DeviceInfo.Name}" Style="{StaticResource AudioDeviceName}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <CheckBox Name="ShowOnlyActiveDevicesCheckBox" Checked="ShowOnlyActiveDevicesCheckBox_OnChecked" Unchecked="ShowOnlyActiveDevicesCheckBox_OnUnchecked">
+                    <TextBlock Text="Show only active devices"></TextBlock>
+                </CheckBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="Save" Name="SaveButton" Click="SaveButton_OnClick" Height="40" Width="80" Margin="10"></Button>

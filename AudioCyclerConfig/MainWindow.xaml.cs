@@ -1,5 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using AudioCycler;
@@ -12,14 +13,61 @@ namespace AudioCyclerConfig
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private CyclerConfig config;
+        private TrulyObservableCollection<AudioDeviceInfoViewModel> _displayedCyclingDevices;
+        private TrulyObservableCollection<AudioDeviceInfoViewModel> _displayedNonCyclingDevices;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.config = CyclerConfig.Load();
-            CyclingDeviceListBox.ItemsSource = config.AllCyclingDevices;
-            UncycledDeviceListBox.ItemsSource = config.NonCyclingDevices;
+            CyclerConfig config = CyclerConfig.Load();
+            InitializeDisplayedDevices(config);
+
+            this.CyclingDeviceListBox.ItemsSource = _displayedCyclingDevices;
+            this.NonCyclingDeviceListBox.ItemsSource = _displayedNonCyclingDevices;
+        }
+
+        private void InitializeDisplayedDevices(CyclerConfig config)
+        {
+            _displayedCyclingDevices = new TrulyObservableCollection<AudioDeviceInfoViewModel>();
+            foreach (AudioDeviceInfo cyclingDevice in config.CyclingDevices)
+            {
+                _displayedCyclingDevices.Add(CreateDeviceViewModel(cyclingDevice));
+            }
+
+            _displayedNonCyclingDevices = new TrulyObservableCollection<AudioDeviceInfoViewModel>();
+            foreach (AudioDeviceInfo nonCyclingDevice in config.NonCyclingDevices)
+            {
+                _displayedNonCyclingDevices.Add(CreateDeviceViewModel(nonCyclingDevice));
+            }
+
+            MarkDefaultDevice();
+        }
+
+        private static AudioDeviceInfoViewModel CreateDeviceViewModel(AudioDeviceInfo cyclingDevice)
+        {
+            return new AudioDeviceInfoViewModel
+            {
+                DeviceInfo = cyclingDevice,
+                IsVisible = true,
+                IsDefaultDevice = false,
+            };
+        }
+
+        private void MarkDefaultDevice()
+        {
+            AudioDeviceInfo defaultDevice = AudioDeviceManager.GetCurrentAudioPlaybackDevice();
+            if (defaultDevice != null)
+            {
+                string defaultDeviceId = defaultDevice.DeviceId;
+                AudioDeviceInfoViewModel defaultDeviceViewModel = _displayedCyclingDevices
+                    .Union(_displayedNonCyclingDevices)
+                    .SingleOrDefault(device => device.DeviceInfo.DeviceId == defaultDeviceId);
+
+                if (defaultDeviceViewModel != null)
+                {
+                    defaultDeviceViewModel.IsDefaultDevice = true;
+                }
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -32,11 +80,11 @@ namespace AudioCyclerConfig
 
         private void ActivateDevicesButton_OnClick(object sender, RoutedEventArgs e)
         {
-            while (UncycledDeviceListBox.SelectedItems.Count > 0)
+            while (NonCyclingDeviceListBox.SelectedItems.Count > 0)
             {
-                AudioDeviceInfo device = (AudioDeviceInfo)UncycledDeviceListBox.SelectedItems[0];
-                config.NonCyclingDevices.Remove(device);
-                config.AllCyclingDevices.Add(device);
+                AudioDeviceInfoViewModel device = (AudioDeviceInfoViewModel)NonCyclingDeviceListBox.SelectedItems[0];
+                _displayedNonCyclingDevices.Remove(device);
+                _displayedCyclingDevices.Add(device);
             }
         }
 
@@ -44,20 +92,47 @@ namespace AudioCyclerConfig
         {
             while (CyclingDeviceListBox.SelectedItems.Count > 0)
             {
-                AudioDeviceInfo device = (AudioDeviceInfo)CyclingDeviceListBox.SelectedItems[0];
-                config.AllCyclingDevices.Remove(device);
-                config.NonCyclingDevices.Add(device);
+                AudioDeviceInfoViewModel device = (AudioDeviceInfoViewModel)CyclingDeviceListBox.SelectedItems[0];
+                _displayedCyclingDevices.Remove(device);
+                _displayedNonCyclingDevices.Add(device);
             }
         }
 
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
         {
+            IEnumerable<AudioDeviceInfo> cyclingDevices = _displayedCyclingDevices.Select(d => d.DeviceInfo);
+            IEnumerable<AudioDeviceInfo> nonCyclingDevices = _displayedNonCyclingDevices.Select(d => d.DeviceInfo);
+
+            CyclerConfig config = new CyclerConfig(cyclingDevices, nonCyclingDevices);
             config.Save();
+            this.Close();
         }
 
         private void CancelButton_OnClick(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void ShowOnlyActiveDevicesCheckBox_OnChecked(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<AudioDeviceInfoViewModel> inactiveDevices =
+              _displayedCyclingDevices.Union(_displayedNonCyclingDevices).Where(device => device.DeviceInfo.Status != DeviceStatus.Active);
+
+            foreach (AudioDeviceInfoViewModel device in inactiveDevices)
+            {
+                device.IsVisible = false;
+            }
+        }
+
+        private void ShowOnlyActiveDevicesCheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<AudioDeviceInfoViewModel> inactiveDevices =
+                _displayedCyclingDevices.Union(_displayedNonCyclingDevices).Where(device => !device.IsVisible);
+
+            foreach (AudioDeviceInfoViewModel device in inactiveDevices)
+            {
+                device.IsVisible = true;
+            }
         }
     }
 }
