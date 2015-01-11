@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Product Id="*" Name="AudioCycler" Language="1033" Version="1.0.0.0" Manufacturer="BergerTech" UpgradeCode="4f5617b3-49be-4b1d-8385-67264ffe3769">
-		
+
 		<?if $(var.Platform) = x64 ?>
 		<?define ProductName = "AudioCycler (64 bit)" ?>
 		<?define Win64 = "yes" ?>
@@ -51,7 +51,8 @@
 						  Name="Cycle Audio Device"
 						  Description="Cycle audio playback device to the next available device"
 						  Target="[#AudioCycler.exe]"
-						  WorkingDirectory="APPLICATIONROOTDIRECTORY">
+						  WorkingDirectory="APPLICATIONROOTDIRECTORY"
+						  Hotkey="1603"><!-- ctrl+alt+c -->
 					<ShortcutProperty Key="System.AppUserModel.ID" Value="Berger.AudioCycler" />
 				</Shortcut>
 
