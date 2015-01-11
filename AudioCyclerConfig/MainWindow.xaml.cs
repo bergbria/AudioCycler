@@ -134,5 +134,51 @@ namespace AudioCyclerConfig
                 device.IsVisible = true;
             }
         }
+
+        private void MoveUpButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<int> selectedIndices = GetSortedSelectedCyclingDeviceIdices(false);
+            foreach (int deviceIndex in selectedIndices)
+            {
+                if (deviceIndex > 0)
+                {
+                    int precedingIndex = deviceIndex - 1;
+                    AudioDeviceInfoViewModel device = _displayedCyclingDevices[deviceIndex];
+                    _displayedCyclingDevices[deviceIndex] = _displayedCyclingDevices[precedingIndex];
+                    _displayedCyclingDevices[precedingIndex] = device;
+                    CyclingDeviceListBox.SelectedItems.Add(device);
+                }
+            }
+        }
+
+        private IEnumerable<int> GetSortedSelectedCyclingDeviceIdices(bool sortDescending)
+        {
+            IEnumerable<int> selectedIndices = CyclingDeviceListBox.SelectedItems.Cast<AudioDeviceInfoViewModel>().Select(
+                device => _displayedCyclingDevices.IndexOf(device));
+
+            if (sortDescending)
+            {
+                return selectedIndices.OrderByDescending(index => index);
+            }
+            
+            return selectedIndices.OrderBy(index => index);
+        }
+
+        private void MoveDownButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<int> selectedIndices = GetSortedSelectedCyclingDeviceIdices(true);
+            foreach (int deviceIndex in selectedIndices)
+            {
+                if (deviceIndex < _displayedCyclingDevices.Count - 1)
+                {
+                    int followingIndex = deviceIndex + 1;
+                    AudioDeviceInfoViewModel device = _displayedCyclingDevices[deviceIndex];
+                    _displayedCyclingDevices[deviceIndex] = _displayedCyclingDevices[followingIndex];
+                    _displayedCyclingDevices[followingIndex] = device;
+                    CyclingDeviceListBox.SelectedItems.Add(device);
+                }
+
+            }
+        }
     }
 }

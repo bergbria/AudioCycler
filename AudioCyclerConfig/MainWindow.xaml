@@ -16,7 +16,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        
+
         <Style TargetType="{x:Type ListBoxItem}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=IsVisible}" Value="False">
@@ -27,36 +27,54 @@
     </Window.Resources>
 
     <Grid Margin="10">
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
-                <ListBox Name="NonCyclingDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding DeviceInfo.Name}" Style="{StaticResource AudioDeviceName}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-                <Button Content="&gt;&gt;" Height="auto" Name="ActivateDevicesButton" Click="ActivateDevicesButton_OnClick"/>
-                <Button Content="&lt;&lt;" Height="auto" Name ="DeactivateDevicesButton" Click="DeactivateDevicesButton_OnClick"/>
-                <ListBox Name="CyclingDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding DeviceInfo.Name}" Style="{StaticResource AudioDeviceName}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>
-            
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <CheckBox Name="ShowOnlyActiveDevicesCheckBox" Checked="ShowOnlyActiveDevicesCheckBox_OnChecked" Unchecked="ShowOnlyActiveDevicesCheckBox_OnUnchecked">
-                    <TextBlock Text="Show only active devices"></TextBlock>
-                </CheckBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Save" Name="SaveButton" Click="SaveButton_OnClick" Height="40" Width="80" Margin="10"></Button>
-                <Button Content="Cancel" Name="CancelButton" Click="CancelButton_OnClick" Height="40" Width="80" Margin="10"></Button>
-            </StackPanel>
+        <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">Devices to Ignore</TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center">Devices to Cycle</TextBlock>
+
+        <ListBox Grid.Row="1" Grid.Column="0" Name="NonCyclingDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding DeviceInfo.Name}" Style="{StaticResource AudioDeviceName}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Button Grid.Row="1" Grid.Column="1" Content="&gt;&gt;" Height="auto" Name="ActivateDevicesButton" Click="ActivateDevicesButton_OnClick"/>
+        <Button Grid.Row="1" Grid.Column="2" Content="&lt;&lt;" Height="auto" Name ="DeactivateDevicesButton" Click="DeactivateDevicesButton_OnClick"/>
+
+        <ListBox Grid.Row="1" Grid.Column="3" Name="CyclingDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding DeviceInfo.Name}" Style="{StaticResource AudioDeviceName}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StackPanel Orientation="Vertical" Grid.Column="4" Grid.Row="1" VerticalAlignment="Center">
+            <Button Margin="3" Content="Move up" Name="MoveUpButton"  Click="MoveUpButton_OnClick"/>
+            <Button Margin="3" Content="Move down" Name="MoveDownButton" Click="MoveDownButton_OnClick"/>
         </StackPanel>
+
+        <CheckBox Grid.Row="2" Grid.Column="0" Name="ShowOnlyActiveDevicesCheckBox" Checked="ShowOnlyActiveDevicesCheckBox_OnChecked" Unchecked="ShowOnlyActiveDevicesCheckBox_OnUnchecked" Margin="10">
+            <TextBlock Text="Show only active devices"></TextBlock>
+        </CheckBox>
+
+        <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Save" Name="SaveButton" Click="SaveButton_OnClick" Height="40" Width="80" Margin="10"></Button>
+            <Button Content="Cancel" Name="CancelButton" Click="CancelButton_OnClick" Height="40" Width="80" Margin="10"></Button>
+        </StackPanel>
+
     </Grid>
 </Window>
