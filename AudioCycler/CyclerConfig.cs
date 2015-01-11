@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Serialization;
 using AudioInterface;
 
@@ -53,9 +49,9 @@ namespace AudioCycler
             }
             else
             {
-                using (var writeStream = new FileStream(SaveFilePath, FileMode.Create, FileAccess.Write))
+                using (FileStream writeStream = new FileStream(SaveFilePath, FileMode.Create, FileAccess.Write))
                 {
-                    var serializer = new XmlSerializer(typeof(CyclerConfig));
+                    XmlSerializer serializer = new XmlSerializer(typeof(CyclerConfig));
                     serializer.Serialize(writeStream, this);
                 }
             }
@@ -63,12 +59,12 @@ namespace AudioCycler
 
         public static CyclerConfig Load()
         {
-            var newConfig = new CyclerConfig();
-            var savedConfig = retrieveSavedConfig();
+            CyclerConfig newConfig = new CyclerConfig();
+            CyclerConfig savedConfig = RetrieveSavedConfig();
             List<AudioDeviceInfo> currentDevices = AudioDeviceManager.GetAvailableAudioDevices();
-            foreach (var savedDevice in savedConfig.AllCyclingDevices)
+            foreach (AudioDeviceInfo savedDevice in savedConfig.AllCyclingDevices)
             {
-                var currentEquivalent = currentDevices.SingleOrDefault(d => d.DeviceId == savedDevice.DeviceId);
+                AudioDeviceInfo currentEquivalent = currentDevices.SingleOrDefault(d => d.DeviceId == savedDevice.DeviceId);
                 if (currentEquivalent == null)
                 {
                     savedDevice.Status = DeviceStatus.NotPresent;
@@ -80,10 +76,10 @@ namespace AudioCycler
                 }
             }
 
-            var allKnownDeviceIds = savedConfig.AllCyclingDevices.Union(savedConfig.NonCyclingDevices).Select(device => device.DeviceId);
-            var newDevices = currentDevices.Where(device => !allKnownDeviceIds.Contains(device.DeviceId));
+            IEnumerable<string> allKnownDeviceIds = savedConfig.AllCyclingDevices.Union(savedConfig.NonCyclingDevices).Select(device => device.DeviceId);
+            IEnumerable<AudioDeviceInfo> newDevices = currentDevices.Where(device => !allKnownDeviceIds.Contains(device.DeviceId));
 
-            foreach (var device in newDevices)
+            foreach (AudioDeviceInfo device in newDevices)
             {
                 newConfig.AllCyclingDevices.Add(device);
             }
@@ -91,20 +87,21 @@ namespace AudioCycler
             return newConfig;
         }
 
-        private static CyclerConfig retrieveSavedConfig()
+        private static CyclerConfig RetrieveSavedConfig()
         {
             CyclerConfig config = new CyclerConfig();
             try
             {
-                using (var readStream = new FileStream(SaveFilePath, FileMode.Open, FileAccess.Read))
+                using (FileStream readStream = new FileStream(SaveFilePath, FileMode.Open, FileAccess.Read))
                 {
-                    var serializer = new XmlSerializer(typeof(CyclerConfig));
+                    XmlSerializer serializer = new XmlSerializer(typeof(CyclerConfig));
                     config = serializer.Deserialize(readStream) as CyclerConfig;
                 }
             }
             catch (IOException)
             {
             }
+
             return config;
         }
     }

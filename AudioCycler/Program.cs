@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
-
 
 namespace AudioCycler
 {
@@ -23,7 +16,7 @@ namespace AudioCycler
         static void Main()
         {
             DeviceCycler cycler = new DeviceCycler(CyclerConfig.Load());
-            var cycleResult = cycler.Cycle();
+            CycleResult cycleResult = cycler.Cycle();
             DisplayToast(cycleResult);
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);

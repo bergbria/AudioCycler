@@ -17,13 +17,6 @@
     </Window.Resources>
 
     <Grid Margin="10">
-        <!--<StackPanel>
-            <StackPanel.Resources>
-                <DataTemplate DataType="{x:Type audioInterface:AudioDeviceInfo}">
-                    <TextBlock></TextBlock>
-                </DataTemplate>
-            </StackPanel.Resources>
-        </StackPanel>-->
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <ListBox Name="UncycledDeviceListBox" HorizontalContentAlignment="Left" SelectionMode="Extended">

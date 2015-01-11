@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AudioInterface;
 
 namespace AudioCycler
@@ -30,11 +27,11 @@ namespace AudioCycler
         {
             if (!Config.IsEmpty)
             {
-                var cyclingDevices = Config.ActiveCyclingDevices;
+                List<AudioDeviceInfo> cyclingDevices = Config.ActiveCyclingDevices;
                 AudioDeviceInfo currentDevice = AudioDeviceManager.GetCurrentAudioPlaybackDevice();
                 int currentIndex = cyclingDevices.FindIndex(dev => dev.DeviceId.Equals(currentDevice.DeviceId));
                 int newIndex = (currentIndex + 1) % cyclingDevices.Count;
-                var resultType = CycleResult.CycleResultType.Success;
+                CycleResult.CycleResultType resultType = CycleResult.CycleResultType.Success;
                 if (currentIndex != newIndex)
                 {
                     AudioDeviceInfo newDevice = cyclingDevices[newIndex];
