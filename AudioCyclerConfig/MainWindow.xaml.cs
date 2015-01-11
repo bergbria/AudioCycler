@@ -45,7 +45,7 @@ namespace AudioCyclerConfig
         {
             while (UncycledDeviceListBox.SelectedItems.Count > 0)
             {
-                var device = (AudioDeviceInfo)UncycledDeviceListBox.SelectedItems[0];
+                AudioDeviceInfo device = (AudioDeviceInfo)UncycledDeviceListBox.SelectedItems[0];
                 config.NonCyclingDevices.Remove(device);
                 config.AllCyclingDevices.Add(device);
             }
@@ -55,7 +55,7 @@ namespace AudioCyclerConfig
         {
             while (CyclingDeviceListBox.SelectedItems.Count > 0)
             {
-                var device = (AudioDeviceInfo)CyclingDeviceListBox.SelectedItems[0];
+                AudioDeviceInfo device = (AudioDeviceInfo)CyclingDeviceListBox.SelectedItems[0];
                 config.AllCyclingDevices.Remove(device);
                 config.NonCyclingDevices.Add(device);
             }
@@ -64,6 +64,11 @@ namespace AudioCyclerConfig
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
         {
             config.Save();
+        }
+
+        private void CancelButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
