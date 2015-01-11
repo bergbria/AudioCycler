@@ -17,14 +17,19 @@
 		<MediaTemplate />
 
 		<Feature Id="ProductFeature" Title="AudioCycler" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
+			<ComponentGroupRef Id="BinaryComponents" />
 		</Feature>
+
+		<Icon Id="Icon.exe" SourceFile="..\Resources\Images\icon.ico"/>
+		<Property Id="ARPPRODUCTICON" Value="Icon.exe" />
 	</Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="$(var.PlatformProgramFilesFolder)">
-				<Directory Id="INSTALLFOLDER" Name="Audio Cycler" />
+				<Directory Id="INSTALLFOLDER" Name="Audio Cycler" >
+					<Directory Id="ImagesFolder" Name="Images" />
+				</Directory>
 			</Directory>
 			<Directory Id="ProgramMenuFolder">
 				<Directory Id="ApplicationShortcutsFolder" Name="Audio Cycler" />
@@ -33,7 +38,7 @@
 	</Fragment>
 
 	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+		<ComponentGroup Id="BinaryComponents" Directory="INSTALLFOLDER">
 			<Component Id="AudioCycler.exe" Guid="BCF80FDF-3145-4FAB-B10D-4E1A0206B640">
 				<File Id="AudioCycler.exe" Source="$(var.AudioCycler.TargetPath)" />
 			</Component>
@@ -42,6 +47,15 @@
 			</Component>
 			<Component Id="AudioInterface.dll" Guid="DE889805-B93C-43FD-BC03-E36834DD5A5D">
 				<File Source="$(var.AudioInterface.TargetPath)"/>
+			</Component>
+			<Component Id="NotificationsExtensions.dll" Guid="ED3C1737-D7E9-4C1A-A288-EF3A04A3D504">
+				<File Source="..\packages\NotificationsExtensions.Portable.1.0.3\lib\NotificationsExtensions.dll"/>
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="ImageComponents" Directory="ImagesFolder">
+			<Component Id="icon.png" Guid="7C540B74-5652-4C38-B77E-DAC3AAC9D317">
+				<File Id="icon.png" Source="..\Resources\Images\icon.png" />
 			</Component>
 		</ComponentGroup>
 
@@ -52,7 +66,8 @@
 						  Description="Cycle audio playback device to the next available device"
 						  Target="[#AudioCycler.exe]"
 						  WorkingDirectory="APPLICATIONROOTDIRECTORY"
-						  Hotkey="1603"><!-- ctrl+alt+c -->
+						  Hotkey="1603">
+					<!-- ctrl+alt+c -->
 					<ShortcutProperty Key="System.AppUserModel.ID" Value="Berger.AudioCycler" />
 				</Shortcut>
 
@@ -69,8 +84,17 @@
 		</ComponentGroup>
 
 		<Feature Id="MainApplication" Title="Main Application" Level="1" >
-			<ComponentGroupRef Id="ProductComponents"/>
+			<ComponentGroupRef Id="BinaryComponents"/>
+			<ComponentGroupRef Id="ImageComponents"/>
 			<ComponentGroupRef Id="ApplicationShortcuts" />
 		</Feature>
+
+		<Feature Id="VCRedist" Title="Visual C++ 12.0 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+			<MergeRef Id="VCRedist"/>
+		</Feature>
+
+		<DirectoryRef Id="TARGETDIR">
+			<Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC120_CRT_x64.msm" DiskId="1" Language="0"/>
+		</DirectoryRef>
 	</Fragment>
 </Wix>
