@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
+using NotificationsExtensions.ToastContent;
 
 namespace AudioCycler
 {
@@ -24,23 +27,16 @@ namespace AudioCycler
 
         private static void DisplayToast(CycleResult result)
         {
-            // Get a toast XML template
-            //XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText04);
-            XmlDocument toastXML = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText03);
-            XmlNodeList stringElements = toastXML.GetElementsByTagName("text");
+            IToastImageAndText03 toastContent = NotificationsExtensions.ToastContent.ToastContentFactory.CreateToastImageAndText03();
+            toastContent.TextHeadingWrap.Text = string.Format("Playing to: {0}", result.CurrentDeviceInfo.Name);
+            toastContent.TextBody.Text = string.Format("Device {0} of {1}", (result.RelativeDeviceNumber + 1), result.NumCycleableDevices);
+            string installDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string imagePath = Path.Combine(installDirectory, "Images", "icon.png");
+            toastContent.Image.Src = imagePath;
 
-            stringElements[0].AppendChild(toastXML.CreateTextNode("Playing to: " + result.CurrentDeviceInfo.Name));
-            stringElements[1].AppendChild(toastXML.CreateTextNode("Device " + (result.RelativeDeviceNumber + 1) + " of " + result.NumCycleableDevices));
-
-            XmlNodeList images = toastXML.GetElementsByTagName("image");
-            //images[0].Attributes.SetNamedItem()
-            //images[0].setAttribute("src", "images/toastImageAndText.png");
-
-            String imagePath = "file:///" + @"E:\Users\Brian\Code\Personal\AudioCycler\img\icon.png";
-            XmlNodeList imageElements = toastXML.GetElementsByTagName("image");
-            imageElements[0].Attributes.GetNamedItem("src").NodeValue = imagePath;
-
-            ToastNotification toast = new ToastNotification(toastXML);
+            XmlDocument xml = new XmlDocument();
+            xml.LoadXml(toastContent.ToString());
+            ToastNotification toast = new ToastNotification(xml);
             ToastNotificationManager.CreateToastNotifier(AppId).Show(toast);
         }
     }
