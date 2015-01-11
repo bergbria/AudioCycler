@@ -62,20 +62,20 @@
         <ComponentGroup Id="ApplicationShortcuts" Directory="ApplicationShortcutsFolder" >
             <Component Id="CyclerShortcut" Guid="F4EC2F81-DEE0-4657-804C-3E669706F14B">
                 <Shortcut Id="CyclerShortcut"
-						  Name="Cycle Audio Device"
-						  Description="Cycle audio playback device to the next available device"
-						  Target="[#AudioCycler.exe]"
-						  WorkingDirectory="APPLICATIONROOTDIRECTORY"
-						  Hotkey="1603">
+                          Name="Cycle Audio Device"
+                          Description="Cycle audio playback device to the next available device"
+                          Target="[#AudioCycler.exe]"
+                          WorkingDirectory="APPLICATIONROOTDIRECTORY"
+                          Hotkey="1603">
                     <!-- ctrl+alt+c -->
                     <ShortcutProperty Key="System.AppUserModel.ID" Value="Berger.AudioCycler" />
                 </Shortcut>
 
                 <Shortcut Id="CyclerConfigShortcut"
-						  Name="Configure AudioCycler"
-						  Description="Configure which devices are cycled in which order"
-						  Target="[#AudioCyclerConfig.exe]"
-						  WorkingDirectory="APPLICATIONROOTDIRECTORY">
+                          Name="Configure AudioCycler"
+                          Description="Configure which devices are cycled in which order"
+                          Target="[#AudioCyclerConfig.exe]"
+                          WorkingDirectory="APPLICATIONROOTDIRECTORY">
                 </Shortcut>
 
                 <RemoveFolder Id="ApplicationShortcutsFolder" On="uninstall"/>
